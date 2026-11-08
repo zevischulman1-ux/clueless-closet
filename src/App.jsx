@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shirt, Sparkles, Plus, Trash2, RefreshCw, Upload, Search, UserPlus, ExternalLink, UserCheck, Layers, Calendar } from 'lucide-react';
+import { Shirt, Sparkles, Plus, Trash2, RefreshCw, Upload, Search, UserPlus, ExternalLink, UserCheck, Layers } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('closet');
@@ -111,7 +111,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-pink-50 text-gray-800 font-sans pb-12">
-      {/* Top Fixed Header */}
+      {/* Header */}
       <header className="bg-pink-400 text-white sticky top-0 z-40 shadow-md border-b-4 border-yellow-300">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
           <h1 className="text-2xl font-extrabold tracking-wider flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('closet')}>
@@ -184,7 +184,7 @@ export default function App() {
       </header>
 
       <main className="max-w-5xl mx-auto p-6">
-        {/* Auth Modal */}
+        {/* Sign Up / Login Modal */}
         {showAuthModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-white p-6 rounded-2xl max-w-sm w-full shadow-2xl border-2 border-pink-300 relative">
@@ -206,7 +206,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Tab 1: Closet */}
+        {/* Tab 1: Closet Grid */}
         {activeTab === 'closet' && (
           <div>
             <div className="bg-white p-6 rounded-2xl shadow-sm mb-8 border border-pink-100">
@@ -274,7 +274,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Tab 2: Virtual Closet Carousel (Cher's Computer Style) */}
+        {/* Tab 2: Carousel View */}
         {activeTab === 'carousel' && (
           <div className="text-center py-6">
             <h2 className="text-3xl font-extrabold text-pink-700 mb-2">Virtual Closet Carousel</h2>
@@ -329,7 +329,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Tab 3: Matchmaker Generator */}
+        {/* Tab 3: Matchmaker */}
         {activeTab === 'generator' && (
           <div className="text-center py-8">
             <h2 className="text-3xl font-extrabold text-pink-700 mb-2">Match Maker</h2>
