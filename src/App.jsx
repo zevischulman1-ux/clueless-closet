@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shirt, Sparkles, Calendar, Plus, Trash2, Heart, RefreshCw } from 'lucide-react';
+import { Shirt, Sparkles, Plus, Trash2, RefreshCw, Upload } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('closet');
@@ -14,6 +14,18 @@ export default function App() {
   const [newItemCategory, setNewItemCategory] = useState('Tops');
   const [newItemImage, setNewItemImage] = useState('');
   const [generatedOutfit, setGeneratedOutfit] = useState(null);
+
+  // Handle uploading local image files
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewItemImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleAddItem = (e) => {
     e.preventDefault();
@@ -87,36 +99,62 @@ export default function App() {
               <h2 className="text-xl font-bold mb-4 text-pink-600 flex items-center gap-2">
                 <Plus className="w-5 h-5" /> Add New Clothes
               </h2>
-              <form onSubmit={handleAddItem} className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="text"
-                  placeholder="Item Name (e.g. Flannel Shirt)"
-                  value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
-                  className="flex-1 p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-                />
-                <select
-                  value={newItemCategory}
-                  onChange={(e) => setNewItemCategory(e.target.value)}
-                  className="p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-                >
-                  <option value="Tops">Tops</option>
-                  <option value="Bottoms">Bottoms</option>
-                  <option value="Shoes">Shoes</option>
-                  <option value="Accessories">Accessories</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Image URL (optional)"
-                  value={newItemImage}
-                  onChange={(e) => setNewItemImage(e.target.value)}
-                  className="flex-1 p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-                />
+              <form onSubmit={handleAddItem} className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input
+                    type="text"
+                    placeholder="Item Name (e.g. Yellow Cardigan)"
+                    value={newItemName}
+                    onChange={(e) => setNewItemName(e.target.value)}
+                    className="flex-1 p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  />
+                  <select
+                    value={newItemCategory}
+                    onChange={(e) => setNewItemCategory(e.target.value)}
+                    className="p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  >
+                    <option value="Tops">Tops</option>
+                    <option value="Bottoms">Bottoms</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
+                </div>
+
+                {/* File Upload Controls */}
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <label className="flex-1 w-full flex items-center justify-center gap-2 p-3 border-2 border-dashed border-pink-300 rounded-xl cursor-pointer hover:bg-pink-50 transition text-pink-600 font-semibold">
+                    <Upload className="w-5 h-5" />
+                    <span>Upload Image from Device</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                  <span className="text-gray-400 font-bold">OR</span>
+                  <input
+                    type="text"
+                    placeholder="Paste Image URL"
+                    value={newItemImage}
+                    onChange={(e) => setNewItemImage(e.target.value)}
+                    className="flex-1 w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  />
+                </div>
+
+                {/* Preview Thumbnail */}
+                {newItemImage && (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-500">Preview:</span>
+                    <img src={newItemImage} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-pink-200" />
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3 rounded-xl transition shadow-sm"
+                  className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3 rounded-xl transition shadow-sm self-end"
                 >
-                  Add Item
+                  Add to Closet
                 </button>
               </form>
             </div>
