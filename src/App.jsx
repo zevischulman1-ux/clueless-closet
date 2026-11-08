@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { Shirt, Sparkles, Plus, Trash2, RefreshCw, Upload, Search, LogIn, UserPlus, ExternalLink, UserCheck } from 'lucide-react';
+import { Shirt, Sparkles, Plus, Trash2, RefreshCw, Upload, Search, UserPlus, ExternalLink, UserCheck } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('closet');
-  const [user, setUser] = useState(null); // Signed-in user state
+  const [user, setUser] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState('signup'); // 'signup' or 'login'
+  const [authMode, setAuthMode] = useState('signup');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Closet items state
   const [items, setItems] = useState([
     { id: 1, name: 'Yellow Plaid Blazer', category: 'Tops', image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400', link: 'https://www.google.com/search?q=Yellow+Plaid+Blazer' },
     { id: 2, name: 'Pleated Mini Skirt', category: 'Bottoms', image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=400', link: 'https://www.google.com/search?q=Pleated+Mini+Skirt' },
@@ -17,7 +16,6 @@ export default function App() {
     { id: 4, name: 'Mary Jane Heels', category: 'Shoes', image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400', link: 'https://www.google.com/search?q=Mary+Jane+Heels' }
   ]);
 
-  // Form & Search states
   const [searchQuery, setSearchQuery] = useState('');
   const [newItemName, setNewItemName] = useState('');
   const [newItemCategory, setNewItemCategory] = useState('Tops');
@@ -25,7 +23,6 @@ export default function App() {
   const [newItemLink, setNewItemLink] = useState('');
   const [generatedOutfit, setGeneratedOutfit] = useState(null);
 
-  // Handle Authentication Mock
   const handleAuthSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) return;
@@ -35,7 +32,6 @@ export default function App() {
     setPassword('');
   };
 
-  // Image File Upload Handler
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -47,7 +43,6 @@ export default function App() {
     }
   };
 
-  // Add Item to Closet
   const handleAddItem = (e) => {
     e.preventDefault();
     if (!newItemName) return;
@@ -84,7 +79,6 @@ export default function App() {
     });
   };
 
-  // Filter items based on top search bar
   const filteredItems = items.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -97,16 +91,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-pink-50 text-gray-800 font-sans">
-      {/* Top Fixed Header with Navigation and Search */}
       <header className="bg-pink-400 text-white sticky top-0 z-40 shadow-md border-b-4 border-yellow-300">
         <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
-          
-          {/* Logo */}
           <h1 className="text-2xl font-extrabold tracking-wider flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('closet')}>
             <Sparkles className="w-7 h-7 text-yellow-300" /> CLUELESS CLOSET
           </h1>
 
-          {/* Search Bar UI */}
           <div className="flex items-center gap-2 w-full md:w-1/3 bg-white text-gray-700 px-3 py-2 rounded-full shadow-inner border border-pink-200">
             <Search className="w-4 h-4 text-pink-400 shrink-0" />
             <input
@@ -127,7 +117,6 @@ export default function App() {
             )}
           </div>
 
-          {/* Header Navigation & Sign-up */}
           <nav className="flex items-center gap-3">
             <button
               onClick={() => setActiveTab('closet')}
@@ -164,10 +153,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Container */}
       <main className="max-w-5xl mx-auto p-6">
-        
-        {/* Sign-Up / Log In Modal */}
         {showAuthModal && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-white p-6 rounded-2xl max-w-sm w-full shadow-2xl border-2 border-pink-300 relative">
@@ -221,10 +207,8 @@ export default function App() {
           </div>
         )}
 
-        {/* Tab 1: Closet View & Item Search */}
         {activeTab === 'closet' && (
           <div>
-            {/* Add Item Form */}
             <div className="bg-white p-6 rounded-2xl shadow-sm mb-8 border border-pink-100">
               <h2 className="text-xl font-bold mb-4 text-pink-600 flex items-center gap-2">
                 <Plus className="w-5 h-5" /> Add New Clothes
@@ -233,4 +217,160 @@ export default function App() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <input
                     type="text"
-                    placeholder="Item Name (
+                    placeholder="Item Name (e.g. Yellow Cardigan)"
+                    value={newItemName}
+                    onChange={(e) => setNewItemName(e.target.value)}
+                    className="flex-1 p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  />
+                  <select
+                    value={newItemCategory}
+                    onChange={(e) => setNewItemCategory(e.target.value)}
+                    className="p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
+                  >
+                    <option value="Tops">Tops</option>
+                    <option value="Bottoms">Bottoms</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <label className="flex-1 w-full flex items-center justify-center gap-2 p-3 border-2 border-dashed border-pink-300 rounded-xl cursor-pointer hover:bg-pink-50 transition text-pink-600 font-semibold text-sm">
+                    <Upload className="w-4 h-4" />
+                    <span>Upload Image</span>
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                  </label>
+                  <span className="text-gray-400 font-bold text-xs">OR</span>
+                  <input
+                    type="text"
+                    placeholder="Paste Image URL"
+                    value={newItemImage}
+                    onChange={(e) => setNewItemImage(e.target.value)}
+                    className="flex-1 w-full p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
+                  />
+                </div>
+
+                <input
+                  type="url"
+                  placeholder="Link to item (optional web link)"
+                  value={newItemLink}
+                  onChange={(e) => setNewItemLink(e.target.value)}
+                  className="p-3 border border-pink-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
+                />
+
+                <button
+                  type="submit"
+                  className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-3 rounded-xl transition shadow-sm self-end"
+                >
+                  Add to Closet
+                </button>
+              </form>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <h2 className="text-2xl font-bold text-pink-800">
+                Your Wardrobe ({filteredItems.length})
+              </h2>
+              {searchQuery && (
+                <button
+                  onClick={handleExternalSearch}
+                  className="bg-yellow-300 hover:bg-yellow-400 text-pink-900 text-sm font-bold px-4 py-2 rounded-xl transition flex items-center gap-2 self-start"
+                >
+                  <Search className="w-4 h-4" /> Search "{searchQuery}" on Web Links
+                </button>
+              )}
+            </div>
+
+            {filteredItems.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-2xl border border-pink-100">
+                <p className="text-gray-500 font-semibold">No items match your search.</p>
+                {searchQuery && (
+                  <button
+                    onClick={handleExternalSearch}
+                    className="mt-3 bg-pink-500 text-white text-sm font-bold px-4 py-2 rounded-xl"
+                  >
+                    Look up "{searchQuery}" on Google Links
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {filteredItems.map((item) => (
+                  <div key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-pink-100 relative group">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-3">
+                      <span className="text-xs font-bold uppercase tracking-wider text-pink-400 bg-pink-50 px-2 py-1 rounded-full">
+                        {item.category}
+                      </span>
+                      <h3 className="font-semibold text-gray-800 mt-1 truncate">{item.name}</h3>
+                      
+                      {item.link && (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 inline-flex items-center gap-1 text-xs text-pink-500 hover:underline font-semibold"
+                        >
+                          <ExternalLink className="w-3 h-3" /> View Product Link
+                        </a>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleDeleteItem(item.id)}
+                      className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition shadow"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'generator' && (
+          <div className="text-center py-8">
+            <h2 className="text-3xl font-extrabold text-pink-700 mb-2">Match Maker</h2>
+            <p className="text-gray-600 mb-6">Let your closet pick your outfit for today!</p>
+            <button
+              onClick={generateRandomOutfit}
+              className="bg-yellow-300 hover:bg-yellow-400 text-pink-900 font-extrabold text-lg px-8 py-4 rounded-full shadow-lg flex items-center gap-2 mx-auto transition transform hover:scale-105"
+            >
+              <RefreshCw className="w-6 h-6" /> Spin Outfit!
+            </button>
+
+            {generatedOutfit && (
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+                <div className="bg-white p-4 rounded-2xl border-2 border-pink-200 shadow-md">
+                  <h4 className="font-bold text-pink-500 mb-2">Top</h4>
+                  {generatedOutfit.top.image && (
+                    <img src={generatedOutfit.top.image} alt="Top" className="w-full h-40 object-cover rounded-xl mb-2" />
+                  )}
+                  <p className="font-semibold">{generatedOutfit.top.name}</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl border-2 border-pink-200 shadow-md">
+                  <h4 className="font-bold text-pink-500 mb-2">Bottom</h4>
+                  {generatedOutfit.bottom.image && (
+                    <img src={generatedOutfit.bottom.image} alt="Bottom" className="w-full h-40 object-cover rounded-xl mb-2" />
+                  )}
+                  <p className="font-semibold">{generatedOutfit.bottom.name}</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl border-2 border-pink-200 shadow-md">
+                  <h4 className="font-bold text-pink-500 mb-2">Shoes</h4>
+                  {generatedOutfit.shoe.image && (
+                    <img src={generatedOutfit.shoe.image} alt="Shoe" className="w-full h-40 object-cover rounded-xl mb-2" />
+                  )}
+                  <p className="font-semibold">{generatedOutfit.shoe.name}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
